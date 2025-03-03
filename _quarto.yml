@@ -13,7 +13,7 @@ website:
       - icon: github
         menu:
           - text: Source Code
-            url:  https://github.com/tomkeaney/sexual_conflict_phenology_and_polyandry
+            url:  https://github.com/tomkeaney/inbreeding_plants_animals
 
 format:
   html:
