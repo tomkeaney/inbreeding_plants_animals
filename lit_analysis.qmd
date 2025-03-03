@@ -120,9 +120,9 @@ analysis_data %>%
   kable_styling("striped") 
 ```
 
-## Run binomial model
+## Run Bernoulli model
 
-We run a quick model to test whether acknowledgement of the automatic transmission advantage affects expectations about inbreeding avoidance, tolerance and preference. We group the 'either possible' and 'inbreeding preference/tolerance' categories together to contrast inbreeding avoidance expectations.
+We run a quick model to test whether acknowledgement of the automatic transmission advantage affects expectations about inbreeding avoidance, tolerance and preference. We group the 'either possible' and 'inbreeding preference/tolerance' categories together to contrast inbreeding avoidance expectations. We use the `brms` default priors, which are weakly informative and do not bias treatment effects.
 
 ```{r}
 analysis_data_for_test <-
@@ -137,7 +137,6 @@ model <-
   brm(Hypothesis ~ 1 + ATA,
     data = analysis_data_for_test,
     family = bernoulli,
-    prior = c(prior(normal(0, 1), class = b)),
     iter = 8000, warmup = 2000,
     chains = 4, cores = 4,
     seed = 2, file = "fits/inbreeding_expectations_model")
