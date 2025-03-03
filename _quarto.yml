@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Do we understand inbreeding? A commentary on Clo et al. 2025"
+  navbar:
+    left:
+      - href: lit_analysis.qmd
+        text: Literature analysis
+
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/tomkeaney/sexual_conflict_phenology_and_polyandry
+
+format:
+  html:
+      theme: Litera # browse these here: https://quarto.org/docs/output-formats/html-themes.html
+      max-width: 1800px # adjust if your plots don't fit or you want more or less whitespace
+      toc: true # do you want a table of contents, by default it floats as you scroll
+      toc-location: left # where should it be displayed
+      toc-title: "Sections" 
+      code-fold: true # fold code up for neater display
+      smooth-scroll: true 
+      embed-resources: false # output doc contains all info needed to display html. Needs to be false for shiny
+      #fig-format: svg
+      grid: 
+        body-width: 1000px
+  
