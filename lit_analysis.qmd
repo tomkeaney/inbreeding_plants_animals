@@ -54,43 +54,46 @@ Load and display the complete dataset.
 ```{r}
 data <- 
   read_delim("inbreeding_adaptive_refs.csv") %>% 
-  mutate(ID = 1:n()) %>% 
   select(-Comment) %>% 
   rename(`Automatic transmission advantage mentioned?` = Automatic_transmission_advantage_mentioned,
+         Title = Article_Title,
+         Journal = Source_Title,
+         Year = Publication_Year,
+         Relevance = Relevant,
+         Type = Article_Type,
+         `Publication format` = `Publication Type`,
          `Null hypothesis` = Null_expectation) %>% 
   mutate(`Null hypothesis` = case_when(`Null hypothesis` == "Bad" ~ "Inbreeding avoidance",
                                        `Null hypothesis` == "Good" ~ "Inbreeding preference/tolerance",
                                        .default = `Null hypothesis`))
 
-my_data_table(data %>% select(ID, Authors, Article_Title, Source_Title, Publication_Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Article_Type, Relevant, Taxa, Accessed, `Publication Type`))
+my_data_table(data %>% select(Authors, Title, Journal, Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Taxa, Type, Relevance, Taxa, Accessed, `Publication format`))
 
 ```
 
 **Column explanations**
 
-- ID: unique identifier for each study
-
 - Authors: authors listed on publication
 
-- Article_title: publication title
+- Title: publication title
 
-- Source_title: journal where study is published
+- Journal: journal where study is published
 
-- Publication_Year: year study was published 
+- Year: year study was published 
 
 - Null hypothesis: did the authors expect inbreeding preference, tolerance or avoidance to be present in their system. 'No evolutionary statement' indicates that they did not posit an evolutionary hypothesis regarding the presence or absence of inbreeding.
 
 - Automatic transmission advantage mentioned: did the authors, whether by name or description, mention the automatic transmission advantage when making their evolutionary argument about inbreeding. 
 
-- Article_type: was the study Empirical, a review, a meta-analysis or theoretical?
-
-- Relevant: how central was inbreeding to the studies research question. 0 = not relevant, 1 = not central or 2 = central, or they clearly stated a evolutionary hypothesis about inbreeding in their system.
-
 - Taxa: animal or plant.
+
+- Type: was the study Empirical, a review, a meta-analysis or theoretical?
+
+- Relevance: how central was inbreeding to the studies research question. 0 = not relevant, 1 = not central or 2 = central, or they clearly stated a evolutionary hypothesis about inbreeding in their system.
 
 - Accessed: 1 = we found the full text, 0 = we did not. 
 
-- Publication type: J = journal article, B = book chapter.
+- Publication format: J = journal article, B = book chapter.
 
 ## Clean the dataset and display data used for analysis
 
@@ -98,11 +101,12 @@ my_data_table(data %>% select(ID, Authors, Article_Title, Source_Title, Publicat
 analysis_data <- 
   data %>% 
   filter(Accessed == 1, # remove studies we couldn't access (also inlcudes the book chapter)
-         Relevant > 1, # scored 0, 1, 2, only include 2s
+         Relevance > 1, # scored 0, 1, 2, only include 2s
          `Null hypothesis` != "No evolutionary statement") %>% # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
-  mutate(ID = 1:n()) %>% 
-  select(ID, 3:11)
+  select(Authors, Title, Journal, Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Taxa, Type, Relevance, Taxa, Accessed, `Publication format`)
 ```
+
+Show the studies selected for analysis 
 
 ```{r}
 my_data_table(analysis_data)
