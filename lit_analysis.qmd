@@ -60,7 +60,6 @@ data <-
          `Null hypothesis` = Null_expectation) %>% 
   mutate(`Null hypothesis` = case_when(`Null hypothesis` == "Bad" ~ "Inbreeding avoidance",
                                        `Null hypothesis` == "Good" ~ "Inbreeding preference/tolerance",
-                                       `Null hypothesis` == "Balanced" ~ "Either possible",
                                        .default = `Null hypothesis`))
 
 my_data_table(data %>% select(ID, Authors, Article_Title, Source_Title, Publication_Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Article_Type, Relevant, Taxa, Accessed, `Publication Type`))
@@ -79,7 +78,7 @@ my_data_table(data %>% select(ID, Authors, Article_Title, Source_Title, Publicat
 
 - Publication_Year: year study was published 
 
-- Null hypothesis: did the authors expect inbreeding preference, tolerance or avoidance to be present in their system. Neutral indicates they did introduced inbreeding but did not posit an evolutionary hypothesis regarding its presence. NA indicates no reference to inbreeding.
+- Null hypothesis: did the authors expect inbreeding preference, tolerance or avoidance to be present in their system. 'No evolutionary statement' indicates that they did not posit an evolutionary hypothesis regarding the presence or absence of inbreeding.
 
 - Automatic transmission advantage mentioned: did the authors, whether by name or description, mention the automatic transmission advantage when making their evolutionary argument about inbreeding. 
 
@@ -100,7 +99,7 @@ analysis_data <-
   data %>% 
   filter(Accessed == 1, # remove studies we couldn't access (also inlcudes the book chapter)
          Relevant > 1, # scored 0, 1, 2, only include 2s
-         `Null hypothesis` != "Neutral") %>% # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
+         `Null hypothesis` != "No evolutionary statement") %>% # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
   mutate(ID = 1:n()) %>% 
   select(ID, 3:11)
 ```
@@ -120,9 +119,9 @@ analysis_data %>%
   kable_styling("striped") 
 ```
 
-## Run Bernoulli model
+## Test whether mentioning the ATA changes the 'gist'
 
-We run a quick model to test whether acknowledgement of the automatic transmission advantage affects expectations about inbreeding avoidance, tolerance and preference. We group the 'either possible' and 'inbreeding preference/tolerance' categories together to contrast inbreeding avoidance expectations. We use the `brms` default priors, which are weakly informative and do not bias treatment effects.
+Using a Fisher's exact test, we test if there is a relationship between mentioning the ATA and whether inbreeding avoidance is the null expectation.
 
 ```{r}
 analysis_data_for_test <-
@@ -132,39 +131,10 @@ analysis_data_for_test <-
     `Null hypothesis` != "Inbreeding avoidance" ~ 0)) %>% 
   rename(ATA = `Automatic transmission advantage mentioned?`)
 
+test <- fisher.test(table(analysis_data_for_test$ATA, analysis_data_for_test$Hypothesis))
 
-model <-
-  brm(Hypothesis ~ 1 + ATA,
-    data = analysis_data_for_test,
-    family = bernoulli,
-    iter = 8000, warmup = 2000,
-    chains = 4, cores = 4,
-    seed = 2, file = "fits/inbreeding_expectations_model")
-
-model
+test
 ```
 
-The summary shows the studies that consider the ATA are far more likely to not assume inbreeding is universally maladaptive. Specifically, the 95% uncertainty intervals indicate the affect is negative i.e. a lower proportion of inbreeding avoidance expectations (coded as 1). However, this is shown on the logit scale, making interpretation difficult.
 
-Lets convert to the response scale and present in a table:
-
-```{r}
-
-model_output_posterior <-
-  as_draws_df(model) %>% 
-  mutate(Prop_avoidance_NO = inv_logit_scaled(b_Intercept),
-         Prop_avoidance_YES = inv_logit_scaled(b_Intercept + b_ATAYES),
-         Difference = Prop_avoidance_NO - Prop_avoidance_YES) %>% 
-  select(Prop_avoidance_NO, Prop_avoidance_YES, Difference) 
-
-model_output_posterior %>% summarise_draws(mean, ~quantile(.x, probs = c(0.025, 0.975))) %>%
-  mutate(across(2:4, ~ round(.x, 3))) %>% 
-  mutate(variable = case_when(variable == "Prop_avoidance_NO" ~ "NO",
-                              variable == "Prop_avoidance_YES" ~ "YES",
-                                      .default = "Difference")) %>% 
-  rename("ATA mentioned?" = variable,
-        `Proportion of studies with avoidance expectation` = mean) %>% 
-  kable()
-  
-```
 
