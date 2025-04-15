@@ -13,8 +13,6 @@ execute:
 library(tidyverse)
 library(kableExtra)
 library(DT)
-library(brms)
-library(tidybayes)
 
 # Create a function to build HTML searchable tables
 
@@ -101,8 +99,9 @@ my_data_table(data %>% select(Authors, Title, Journal, Year, `Null hypothesis`, 
 analysis_data <- 
   data %>% 
   filter(Accessed == 1, # remove studies we couldn't access (also inlcudes the book chapter)
-         Relevance > 1, # scored 0, 1, 2, only include 2s
-         `Null hypothesis` != "No evolutionary statement") %>% # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
+         Relevance == 2, # scored 0, 1, 2, only include 2s
+         `Null hypothesis` != "No evolutionary statement", # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
+        Taxa == "Animal") %>%
   select(Authors, Title, Journal, Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Taxa, Type, Relevance, Taxa, Accessed, `Publication format`)
 ```
 

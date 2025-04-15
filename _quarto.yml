@@ -13,8 +13,7 @@ website:
       - icon: github
         menu:
           - text: Source Code
-            url:  https://github.com/tomkeaney/inbreeding_plants_animals
-
+            url:  removed_for_blind_peer_review
 format:
   html:
       theme: Litera # browse these here: https://quarto.org/docs/output-formats/html-themes.html
@@ -24,7 +23,7 @@ format:
       toc-title: "Sections" 
       code-fold: true # fold code up for neater display
       smooth-scroll: true 
-      embed-resources: false # output doc contains all info needed to display html. Needs to be false for shiny
+      embed-resources: true # output doc contains all info needed to display html
       #fig-format: svg
       grid: 
         body-width: 1000px
