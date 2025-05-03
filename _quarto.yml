@@ -13,7 +13,7 @@ website:
       - icon: github
         menu:
           - text: Source Code
-            url:  removed_for_blind_peer_review
+            url:  https://github.com/tomkeaney/inbreeding_plants_animals
 format:
   html:
       theme: yeti # browse these here: https://quarto.org/docs/output-formats/html-themes.html
