@@ -1,5 +1,5 @@
 ---
-title: "Do we understand inbreeding? A commentary on Clo et al. 2025"
+title: "Why zoologists shouldn’t treat the automatic transmission advantage as an afterthought"
 format: html
 editor: source
 execute:
@@ -43,7 +43,7 @@ my_data_table <- function(df){
 
 To get the gist for the current state of the field, we searched the Web of Science for published journal articles that examined whether animals tolerated, preferred or avoided inbreeding. The following search string was used to search for studies published between the 1st of January 2020 to the 1st of February 2025: TS=("inbreeding tolerance") OR TS=("inbreeding preference") OR TS=("inbreeding avoidance"). Query link: https://www.webofscience.com/wos/woscc/summary/e4d61622-9f6b-48f1-b954-83c598431347-014b923814/relevance/1 This search criteria identified 188 studies. We were unable to access two studies and we removed a third from our full-text screen because it was not a journal article.  
 
-From this initial list, we identified 121 studies where the authors stated whether they expected inbreeding preference, tolerance or avoidance to be present in their system. Of these, 81 had clear, evolutionary-driven hypotheses regarding inbreeding. These 81 studies were retained for analysis.   
+From this initial list, we identified 121 studies where the authors stated whether they expected inbreeding preference, tolerance or avoidance to be present in their system. Of these, 78 had clear, evolutionary-driven hypotheses regarding inbreeding. These 78 studies were retained for analysis.   
 
 ## The dataset
 
@@ -71,34 +71,34 @@ my_data_table(data %>% select(Authors, Title, Journal, Year, `Null hypothesis`, 
 
 **Column explanations**
 
-- Authors: authors listed on publication
+- **Authors**: authors listed on publication
 
-- Title: publication title
+- **Title**: publication title
 
-- Journal: journal where study is published
+- **Journal**: journal where study is published
 
-- Year: year study was published 
+- **Year**: year study was published 
 
-- Null hypothesis: did the authors expect inbreeding preference, tolerance or avoidance to be present in their system. 'No evolutionary statement' indicates that they did not posit an evolutionary hypothesis regarding the presence or absence of inbreeding.
+- **Null hypothesis**: did the authors expect inbreeding preference, tolerance or avoidance to be present in their system. 'No evolutionary statement' indicates that they did not posit an evolutionary hypothesis regarding the presence or absence of inbreeding.
 
-- Automatic transmission advantage mentioned: did the authors, whether by name or description, mention the automatic transmission advantage when making their evolutionary argument about inbreeding. 
+- **Automatic transmission advantage mentioned**: did the authors, whether by name or description, mention the automatic transmission advantage when making their evolutionary argument about inbreeding. 
 
-- Taxa: animal or plant.
+- **Taxa**: animal or plant.
 
-- Type: was the study Empirical, a review, a meta-analysis or theoretical?
+- **Type**: was the study Empirical, a review, a meta-analysis or theoretical?
 
-- Relevance: how central was inbreeding to the studies research question. 0 = not relevant, 1 = not central or 2 = central, or they clearly stated a evolutionary hypothesis about inbreeding in their system.
+- **Relevance**: how central was inbreeding to the studies research question. 0 = not relevant, 1 = not central or 2 = central, or they clearly stated a evolutionary hypothesis about inbreeding in their system.
 
-- Accessed: 1 = we found the full text, 0 = we did not. 
+- **Accessed**: 1 = we found the full text, 0 = we did not. 
 
-- Publication format: J = journal article, B = book chapter.
+- **Publication format**: J = journal article, B = book chapter.
 
 ## Clean the dataset and display data used for analysis
 
 ```{r}
 analysis_data <- 
   data %>% 
-  filter(Accessed == 1, # remove studies we couldn't access (also inlcudes the book chapter)
+  filter(Accessed == 1, # remove studies we couldn't access (also includes the book chapter)
          Relevance == 2, # scored 0, 1, 2, only include 2s
          `Null hypothesis` != "No evolutionary statement", # remove studies that mention inbreeding, but make no clear evolutionary prediction relating to it
         Taxa == "Animal") %>%
