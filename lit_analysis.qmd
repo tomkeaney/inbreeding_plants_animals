@@ -52,7 +52,6 @@ Load and display the complete dataset.
 ```{r}
 data <- 
   read_delim("inbreeding_adaptive_refs.csv") %>% 
-  select(-Comment) %>% 
   rename(`Automatic transmission advantage mentioned?` = Automatic_transmission_advantage_mentioned,
          Title = Article_Title,
          Journal = Source_Title,
@@ -60,10 +59,7 @@ data <-
          Relevance = Relevant,
          Type = Article_Type,
          `Publication format` = `Publication Type`,
-         `Null hypothesis` = Null_expectation) %>% 
-  mutate(`Null hypothesis` = case_when(`Null hypothesis` == "Bad" ~ "Inbreeding avoidance",
-                                       `Null hypothesis` == "Good" ~ "Inbreeding preference/tolerance",
-                                       .default = `Null hypothesis`))
+         `Null hypothesis` = Null_expectation)
 
 my_data_table(data %>% select(Authors, Title, Journal, Year, `Null hypothesis`, `Automatic transmission advantage mentioned?`, Taxa, Type, Relevance, Taxa, Accessed, `Publication format`))
 
