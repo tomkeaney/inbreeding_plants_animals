@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Do we understand inbreeding? A commentary on Clo et al. 2025"
+  title: "Why zoologists shouldn’t treat the ATA as an afterthought"
   navbar:
     left:
       - href: lit_analysis.qmd
@@ -16,7 +16,7 @@ website:
             url:  removed_for_blind_peer_review
 format:
   html:
-      theme: Litera # browse these here: https://quarto.org/docs/output-formats/html-themes.html
+      theme: yeti # browse these here: https://quarto.org/docs/output-formats/html-themes.html
       max-width: 1800px # adjust if your plots don't fit or you want more or less whitespace
       toc: true # do you want a table of contents, by default it floats as you scroll
       toc-location: left # where should it be displayed
