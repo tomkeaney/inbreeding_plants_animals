@@ -45,6 +45,8 @@ To get the gist for the current state of the field, we searched the Web of Scien
 
 From this initial list, we identified 121 studies where the authors stated whether they expected inbreeding preference, tolerance or avoidance to be present in their system. Of these, 78 had clear, evolutionary-driven hypotheses regarding inbreeding. These 78 studies were retained for analysis.   
 
+To download our reference list you can either download a .csv from the Tables below, get it directly from the [source repository](https://github.com/tomkeaney/inbreeding_plants_animals) or go to our Open Science Network repository.  
+
 ## The dataset
 
 Load and display the complete dataset. 
