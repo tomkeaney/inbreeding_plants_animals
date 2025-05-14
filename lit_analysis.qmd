@@ -1,5 +1,6 @@
 ---
 title: "Why zoologists shouldn’t treat the automatic transmission advantage as an afterthought"
+author: "Thomas Keaney and Hanna Kokko"
 format: html
 editor: source
 execute:
